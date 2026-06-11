@@ -52,10 +52,14 @@ public class Lox {
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
 
+        System.out.println("--------Tokens--------");
+
         // For now, just print the tokens.
         for (Token token : tokens) {
             System.out.println("Type: " + token.type + ", Lexeme: " + token.lexeme + ", Literal: " + token.literal);
         }
+
+        System.out.println("--------End--------");
     }
 
     static void error(int line, String message) {
