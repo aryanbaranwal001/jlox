@@ -35,6 +35,9 @@ class PrintVisitor implements PastryVisitor {
 
 public class Visit {
     public static void main() {
+        // Beignet pastry1 = new Beignet();
+        // Cruller pastry2 = new Cruller();
+
         Pastry pastry1 = new Beignet();
         Pastry pastry2 = new Cruller();
 
