@@ -3,6 +3,7 @@ package jlox;
 class Token {
   final TokenType type;
   final String lexeme;
+  // C all classes extends Object class implicitly, so this field can hold anything.
   final Object literal;
   final int line;
 
@@ -14,6 +15,8 @@ class Token {
   }
 
   public String toString() {
-    return type + " " + lexeme + " " + literal;
+    return String.format(
+        "[ type=%-15s | lexeme=%-12s | literal=%-12s ]",
+        type, "'" + lexeme + "'", "'" + literal + "'");
   }
 }
