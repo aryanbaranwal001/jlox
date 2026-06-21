@@ -1,52 +1,49 @@
 package jlox;
 
+// AI (pretty print), no need to understand for now
 class AstPrinter implements Expr.Visitor<String> {
+
   String print(Expr expr) {
     return expr.accept(this);
   }
 
   @Override
   public String visitBinaryExpr(Expr.Binary expr) {
-    return parenthesize(expr.operator.lexeme, expr.left, expr.right);
+    String left = indent(expr.left.accept(this), true);
+    String right = indent(expr.right.accept(this), false);
+
+    return "Binary(" + expr.operator.lexeme + ")\n" + left + "\n" + right;
   }
 
   @Override
   public String visitGroupingExpr(Expr.Grouping expr) {
-    return parenthesize("group", expr.expression);
+    return "Grouping\n" + indent(expr.expression.accept(this), false);
   }
 
   @Override
   public String visitLiteralExpr(Expr.Literal expr) {
-    if (expr.value == null) return "nil";
-    return expr.value.toString();
+    if (expr.value == null) return "Literal(nil)";
+    return "Literal(" + expr.value + ")";
   }
 
   @Override
   public String visitUnaryExpr(Expr.Unary expr) {
-    return parenthesize(expr.operator.lexeme, expr.right);
+    return "Unary(" + expr.operator.lexeme + ")\n" + indent(expr.right.accept(this), false);
   }
 
-  private String parenthesize(String name, Expr... exprs) {
-    StringBuilder builder = new StringBuilder();
-    builder.append("(").append(name);
-    for (Expr expr : exprs) {
-      builder.append(" ");
-      builder.append(expr.accept(this));
+  private String indent(String text, boolean hasSibling) {
+    String[] lines = text.split("\n");
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(hasSibling ? "├── " : "└── ");
+    sb.append(lines[0]);
+
+    for (int i = 1; i < lines.length; i++) {
+      sb.append("\n");
+      sb.append(hasSibling ? "│   " : "    ");
+      sb.append(lines[i]);
     }
-    builder.append(")");
-    return builder.toString();
-  }
 
-  public static void main(String[] args) {
-    Expr expression =
-        new Expr.Binary(
-            new Expr.Binary(
-                new Expr.Literal(123),
-                new Token(TokenType.MINUS, "-", null, 1),
-                new Expr.Literal(123)),
-            new Token(TokenType.STAR, "*", null, 1),
-            new Expr.Grouping(new Expr.Literal(45.67)));
-
-    System.out.println(new AstPrinter().print(expression));
+    return sb.toString();
   }
 }
