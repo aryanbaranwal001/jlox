@@ -9,6 +9,9 @@ import java.util.Map;
 
 class Scanner {
   private final String source;
+
+  // C List is interface
+  // C ArrayList is concrete class implementing List
   private final List<Token> tokens = new ArrayList<>();
   private int start = 0;
   private int current = 0;
@@ -16,6 +19,7 @@ class Scanner {
 
   private static final Map<String, TokenType> keywords;
 
+  // C following code runs when class is first initialized by JVM
   static {
     keywords = new HashMap<>();
     keywords.put("and", AND);
@@ -42,10 +46,12 @@ class Scanner {
 
   List<Token> scanTokens() {
     while (!isAtEnd()) {
+
       // We are at the beginning of the next lexeme.
       start = current;
       scanToken();
     }
+
     tokens.add(new Token(EOF, "", null, line));
     return tokens;
   }
@@ -114,6 +120,7 @@ class Scanner {
       case '"':
         string();
         break;
+
       default:
         if (isDigit(c)) {
           number();
@@ -137,6 +144,8 @@ class Scanner {
   private void identifier() {
     while (isAlphaNumeric(peek())) advance();
     String text = source.substring(start, current);
+
+    // checking if identifier is not any of the reserved keywords
     TokenType type = keywords.get(text);
 
     if (type == null) type = IDENTIFIER;
@@ -169,6 +178,7 @@ class Scanner {
       if (peek() == '\n') line++;
       advance();
     }
+
     if (isAtEnd()) {
       Lox.error(line, "Unterminated string.");
       return;

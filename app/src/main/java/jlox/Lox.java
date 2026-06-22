@@ -1,13 +1,17 @@
 package jlox;
 
-import java.io.BufferedReader;
+// We also need to manage the memory of the values of Lox
+// A handy object representation and a really nice garbage collector
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+// C for a .java file, there can only be one public (top-level) class, whose name must match with
+// C file
+// C mainClass is set to Lox.main in build.kts, for running the main()
 public class Lox {
 
   private static final Interpreter interpreter = new Interpreter();
@@ -22,9 +26,11 @@ public class Lox {
     if (args.length > 1) {
       System.out.println("Usage: jlox [script]");
       System.exit(64);
+
     } else if (args.length == 1) {
       // parsing the source code
       runFile(args[0]);
+
     } else {
       return;
       // runPrompt();
@@ -33,6 +39,7 @@ public class Lox {
 
   private static void runFile(String path) throws IOException {
 
+    // T get to the bottom of this .defaultCharset, encoding decoding
     byte[] bytes = Files.readAllBytes(Paths.get(path));
     run(new String(bytes, Charset.defaultCharset()));
 

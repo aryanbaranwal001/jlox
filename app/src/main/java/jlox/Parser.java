@@ -1,3 +1,5 @@
+// for formal grammar, take reference pg-81 of crafting interpreters
+
 package jlox;
 
 import static jlox.TokenType.*;
@@ -104,6 +106,7 @@ class Parser {
     throw error(peek(), message);
   }
 
+  // checks at current index, if true, current++
   private boolean match(TokenType... types) {
     for (TokenType type : types) {
       if (check(type)) {
