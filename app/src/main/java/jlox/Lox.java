@@ -9,19 +9,25 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class Lox {
+
+  private static final Interpreter interpreter = new Interpreter();
+
+  // syntax error flag
   static boolean hadError = false;
 
+  // runtime error flag
+  static boolean hadRuntimeError = false;
+
   public static void main(String[] args) throws IOException {
-    // for (String arg : args) {
-    // System.out.println(arg);
-    // }
     if (args.length > 1) {
       System.out.println("Usage: jlox [script]");
       System.exit(64);
     } else if (args.length == 1) {
+      // parsing the source code
       runFile(args[0]);
     } else {
-      runPrompt();
+      return;
+      // runPrompt();
     }
   }
 
@@ -30,35 +36,41 @@ public class Lox {
     byte[] bytes = Files.readAllBytes(Paths.get(path));
     run(new String(bytes, Charset.defaultCharset()));
 
-    // error in the exit code.
+    // error in syntax
     if (hadError) System.exit(65);
+
+    // error in semantics
+    if (hadRuntimeError) System.exit(70);
   }
 
-  private static void runPrompt() throws IOException {
-    InputStreamReader input = new InputStreamReader(System.in);
-    BufferedReader reader = new BufferedReader(input);
-    for (; ; ) {
-      System.out.print("> ");
-      String line = reader.readLine();
-      if (line == null) break;
-      run(line);
-      hadError = false;
-    }
-  }
+  // private static void runPrompt() throws IOException {
+  //   InputStreamReader input = new InputStreamReader(System.in);
+  //   BufferedReader reader = new BufferedReader(input);
+  //   for (; ; ) {
+  //     System.out.print("> ");
+  //     String line = reader.readLine();
+  //     if (line == null) break;
+  //     run(line);
+  //     hadError = false;
+  //   }
+  // }
 
+  // C static means can be called without the instance
   private static void run(String source) {
     Scanner scanner = new Scanner(source);
     List<Token> tokens = scanner.scanTokens();
 
-    System.out.println("--------Tokens--------");
+    // for (Token token : tokens) {
+    //   System.out.println(token);
+    // }
 
-    // For now, just print the tokens.
-    for (Token token : tokens) {
-      System.out.println(
-          "Type: " + token.type + ", Lexeme: " + token.lexeme + ", Literal: " + token.literal);
-    }
+    Parser parser = new Parser(tokens);
+    Expr expression = parser.parse();
 
-    System.out.println("--------End--------");
+    // Stop if there was a syntax error.
+    if (hadError) return;
+    System.out.println(new AstPrinter().print(expression));
+    interpreter.interpret(expression);
   }
 
   static void error(int line, String message) {
@@ -76,5 +88,10 @@ public class Lox {
     } else {
       report(token.line, " at '" + token.lexeme + "'", message);
     }
+  }
+
+  static void runtimeError(RuntimeError error) {
+    System.err.println(error.getMessage() + "\n[line " + error.token.line + "]");
+    hadRuntimeError = true;
   }
 }
