@@ -1,34 +1,41 @@
 <!-- whole program is made of individual statements -->
-program    → statement* EOF ;
+<!-- following is called program rule/top level rule/start rule that describes a complete program -->
 
-statement  → exprStmt
-           | printStmt ;
+program      → declaration* EOF ;
 
-exprStmt   → expression ";" ;
+declaration  → exprStmt
+             | printStmt ;
 
-printStmt  → "print" expression ";" ;
+statement    → exprStmt
+             | printStmt ;
+
+exprStmt     → expression ";" ;
+
+printStmt    → "print" expression ";" ;
 
 ---
 
-expression → equality ;
+varDecl      → "var" IDENTIFIER ( "=" expression )? ";" ;
 
-equality   → comparison ( ( "!=" | "==" ) comparison )* ;
+expression   → equality ;
 
-comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
+equality     → comparison ( ( "!=" | "==" ) comparison )* ;
 
-term       → factor ( ( "-" | "+" ) factor )* ;
+comparison   → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
 
-factor     → unary ( ( "/" | "*" ) unary )* ;
+term         → factor ( ( "-" | "+" ) factor )* ;
 
-unary      → ( "!" | "-" ) unary
-           | primary ;
+factor       → unary ( ( "/" | "*" ) unary )* ;
 
-primary    → NUMBER
-           | STRING
-           | "true"
-           | "false"
-           | "nil"
-           | "(" expression ")" ;
+unary        → ( "!" | "-" ) unary
+             | primary ;
+
+primary      → NUMBER
+             | STRING
+             | "true"
+             | "false"
+             | "nil"
+             | "(" expression ")" ;
 
 <!-- Info -->
 <!-- 1. ; at the end means "this grammar rule ends here" -->
