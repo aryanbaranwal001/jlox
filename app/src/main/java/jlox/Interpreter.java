@@ -2,11 +2,14 @@ package jlox;
 
 import java.util.List;
 
+// C we are using Void instead of void because void can't be used in a generic type parameter.
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
   private Object evaluate(Expr expr) {
     return expr.accept(this);
   }
+
+  private Environment environment = new Environment();
 
   @Override
   public Void visitExpressionStmt(Stmt.Expression stmt) {
@@ -19,6 +22,21 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     Object value = evaluate(stmt.expression);
     System.out.println(stringify(value));
     return null;
+  }
+
+  @Override
+  public Void visitVarStmt(Stmt.Var stmt) {
+    Object value = null;
+    if (stmt.initializer != null) {
+      value = evaluate(stmt.initializer);
+    }
+    environment.define(stmt.name.lexeme, value);
+    return null;
+  }
+
+  @Override
+  public Object visitVariableExpr(Expr.Variable expr) {
+    return environment.get(expr.name);
   }
 
   void interpret(List<Stmt> statements) {

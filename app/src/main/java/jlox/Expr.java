@@ -76,6 +76,7 @@ abstract class Expr {
   }
 
   static class Variable extends Expr {
+    // should be identifier instead of name
     Variable(Token name) {
       this.name = name;
     }
