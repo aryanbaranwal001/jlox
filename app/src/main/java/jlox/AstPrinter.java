@@ -1,11 +1,45 @@
 package jlox;
 
+import java.util.List;
+
 // AI (pretty print), no need to understand for now
-class AstPrinter implements Expr.Visitor<String> {
+class AstPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
 
   String print(Expr expr) {
     return expr.accept(this);
   }
+
+  String print(Stmt stmt) {
+    return stmt.accept(this);
+  }
+
+  String print(List<Stmt> stmts) {
+    StringBuilder sb = new StringBuilder();
+    for (Stmt stmt : stmts) {
+      sb.append(stmt.accept(this)).append("\n");
+    }
+    return sb.toString().stripTrailing();
+  }
+
+  // --- Stmt visitors ---
+
+  @Override
+  public String visitExpressionStmt(Stmt.Expression stmt) {
+    return "ExprStmt\n" + indent(stmt.expression.accept(this), false);
+  }
+
+  @Override
+  public String visitPrintStmt(Stmt.Print stmt) {
+    return "PrintStmt\n" + indent(stmt.expression.accept(this), false);
+  }
+
+  @Override
+  public String visitVarStmt(Stmt.Var stmt) {
+    if (stmt.initializer == null) return "VarDecl(" + stmt.name.lexeme + ")";
+    return "VarDecl(" + stmt.name.lexeme + ")\n" + indent(stmt.initializer.accept(this), false);
+  }
+
+  // --- Expr visitors ---
 
   @Override
   public String visitBinaryExpr(Expr.Binary expr) {
@@ -29,6 +63,11 @@ class AstPrinter implements Expr.Visitor<String> {
   @Override
   public String visitUnaryExpr(Expr.Unary expr) {
     return "Unary(" + expr.operator.lexeme + ")\n" + indent(expr.right.accept(this), false);
+  }
+
+  @Override
+  public String visitVariableExpr(Expr.Variable expr) {
+    return "Variable(" + expr.name.lexeme + ")";
   }
 
   private String indent(String text, boolean hasSibling) {
