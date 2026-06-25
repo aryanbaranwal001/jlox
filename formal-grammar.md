@@ -19,6 +19,8 @@ varDecl      → "var" IDENTIFIER ( "=" expression )? ";" ;
 
 expression   → equality ;
 
+assignment   → IDENTIFIER "=" assignment | equality ;
+
 equality     → comparison ( ( "!=" | "==" ) comparison )* ;
 
 comparison   → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
