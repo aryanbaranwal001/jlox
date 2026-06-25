@@ -25,6 +25,8 @@ class Parser {
     return statements;
   }
 
+  // Statement grammar rules
+
   private Stmt declaration() {
     try {
       if (match(VAR)) return varDeclaration();
@@ -61,6 +63,8 @@ class Parser {
     consume(SEMICOLON, "Expect ';' after expression.");
     return new Stmt.Expression(expr);
   }
+
+  //  Expression grammar rules (lowest to highest precedence)
 
   private Expr expression() {
     return assignment();
@@ -132,10 +136,6 @@ class Parser {
     return primary();
   }
 
-  // TODO
-  // 1. make a mind map on how code is generating the map/ast in your head, basically go over the
-  // code properly once more.
-
   private Expr primary() {
     if (match(FALSE)) return new Expr.Literal(false);
     if (match(TRUE)) return new Expr.Literal(true);
@@ -157,7 +157,8 @@ class Parser {
     throw error(peek(), "Expect expression.");
   }
 
-  // can't understand after consume
+  //  Helpers
+
   private Token consume(TokenType type, String message) {
     if (check(type)) return advance();
     throw error(peek(), message);
@@ -199,6 +200,7 @@ class Parser {
     return tokens.get(current - 1);
   }
 
+  //  Error handling & recovery
   private ParseError error(Token token, String message) {
     Lox.error(token, message);
     return new ParseError();
