@@ -16,6 +16,7 @@ public class GenerateAst {
         outputDir,
         "Expr",
         Arrays.asList(
+            "Logical : Expr left, Token operator, Expr right",
             "Assign : Token name, Expr value",
             "Binary : Expr left, Token operator, Expr right",
             "Grouping : Expr expression",
