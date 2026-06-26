@@ -7,7 +7,13 @@ declaration  → exprStmt
              | printStmt ;
 
 statement    → exprStmt
-             | printStmt ;
+             | ifStmt
+             | printStmt
+             | block ;
+
+ifStmt       → "if" "(" expression ")" statement ("else" statement)? ;
+
+block        → "{" declaration* "}" ;
 
 exprStmt     → expression ";" ;
 
@@ -19,7 +25,11 @@ varDecl      → "var" IDENTIFIER ( "=" expression )? ";" ;
 
 expression   → equality ;
 
-assignment   → IDENTIFIER "=" assignment | equality ;
+assignment   → IDENTIFIER "=" assignment | logic_or ;
+
+logic_or     → logic_and ( "or" logic_and )*;
+
+logic_and    → equality ( "and" equality )* ;
 
 equality     → comparison ( ( "!=" | "==" ) comparison )* ;
 
