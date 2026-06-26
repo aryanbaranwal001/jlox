@@ -24,6 +24,17 @@ class AstPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
   // --- Stmt visitors ---
 
   @Override
+  public String visitBlockStmt(Stmt.Block stmt) {
+    if (stmt.statements.isEmpty()) return "Block(empty)";
+    StringBuilder sb = new StringBuilder("Block");
+    for (int i = 0; i < stmt.statements.size(); i++) {
+      boolean hasNext = i < stmt.statements.size() - 1;
+      sb.append("\n").append(indent(stmt.statements.get(i).accept(this), hasNext));
+    }
+    return sb.toString();
+  }
+
+  @Override
   public String visitExpressionStmt(Stmt.Expression stmt) {
     return "ExprStmt\n" + indent(stmt.expression.accept(this), false);
   }
