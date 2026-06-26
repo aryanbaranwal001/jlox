@@ -42,6 +42,11 @@ class AstPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
   // --- Expr visitors ---
 
   @Override
+  public String visitAssignExpr(Expr.Assign expr) {
+    return "Assign(" + expr.name.lexeme + ")\n" + indent(expr.value.accept(this), false);
+  }
+
+  @Override
   public String visitBinaryExpr(Expr.Binary expr) {
     String left = indent(expr.left.accept(this), true);
     String right = indent(expr.right.accept(this), false);
