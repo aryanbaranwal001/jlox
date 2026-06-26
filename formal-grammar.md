@@ -3,21 +3,27 @@
 
 program      → declaration* EOF ;
 
-declaration  → exprStmt
-             | printStmt ;
+declaration  → varDecl
+             | statement ;
 
 statement    → exprStmt
              | ifStmt
              | printStmt
+             | whileStmt
+             | forStmt
              | block ;
-
-ifStmt       → "if" "(" expression ")" statement ("else" statement)? ;
-
-block        → "{" declaration* "}" ;
 
 exprStmt     → expression ";" ;
 
+ifStmt       → "if" "(" expression ")" statement ("else" statement)? ;
+
 printStmt    → "print" expression ";" ;
+
+whileStmt    → "while" "(" expression ")" statment ;
+
+forstmt      → "for" "(" ( varDecl | exprStmt | ";" ) expression? ";" expression? ")" statement ;
+
+block        → "{" declaration* "}" ;
 
 ---
 
