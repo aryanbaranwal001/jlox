@@ -15,3 +15,4 @@
 - [x] local variables
 - [x] shadowing
 - [x] nested scopes
+- [x] add if else control flow

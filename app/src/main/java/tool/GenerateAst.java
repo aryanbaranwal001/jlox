@@ -27,6 +27,7 @@ public class GenerateAst {
         outputDir,
         "Stmt",
         Arrays.asList(
+            "If : Expr condition, Stmt thenBranch, Stmt elseBranch",
             "Block : List<Stmt> statements",
             "Expression : Expr expression",
             "Print : Expr expression",
