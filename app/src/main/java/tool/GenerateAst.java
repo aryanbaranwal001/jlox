@@ -27,6 +27,7 @@ public class GenerateAst {
         outputDir,
         "Stmt",
         Arrays.asList(
+            "Block : List<Stmt> statements",
             "Expression : Expr expression",
             "Print : Expr expression",
             "Var : Token name, Expr initializer"));
@@ -38,6 +39,7 @@ public class GenerateAst {
     PrintWriter writer = new PrintWriter(path, "UTF-8");
     writer.println("package jlox;");
     writer.println("import static jlox.TokenType.*;");
+    writer.println("import java.util.List;");
     writer.println("abstract class " + baseName + " {");
     writer.println("  abstract <R> R accept(Visitor<R> visitor);");
     defineVisitor(writer, baseName, types);
