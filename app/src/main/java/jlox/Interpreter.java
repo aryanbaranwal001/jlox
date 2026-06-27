@@ -55,6 +55,14 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     return null;
   }
 
+  @Override
+  public Void visitWhileStmt(Stmt.While stmt) {
+    while (isTruthy(evaluate(stmt.condition))) {
+      execute(stmt.body);
+    }
+    return null;
+  }
+
   // we don't evaluate elseBranch or thenBranch before the if-else statement as they might trigger a
   // side effect
   @Override
