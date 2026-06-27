@@ -17,3 +17,4 @@
 - [x] nested scopes
 - [x] add if else control flow
 - [x] while loops
+- [x] for loops
