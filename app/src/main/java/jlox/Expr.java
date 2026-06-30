@@ -2,6 +2,8 @@ package jlox;
 
 import static jlox.TokenType.*;
 
+import java.util.List;
+
 abstract class Expr {
   abstract <R> R accept(Visitor<R> visitor);
 
@@ -17,6 +19,8 @@ abstract class Expr {
     R visitLiteralExpr(Literal expr);
 
     R visitUnaryExpr(Unary expr);
+
+    R visitCallExpr(Call expr);
 
     R visitVariableExpr(Variable expr);
   }
@@ -109,6 +113,23 @@ abstract class Expr {
 
     final Token operator;
     final Expr right;
+  }
+
+  static class Call extends Expr {
+    Call(Expr callee, Token paren, List<Expr> arguements) {
+      this.callee = callee;
+      this.paren = paren;
+      this.arguements = arguements;
+    }
+
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitCallExpr(this);
+    }
+
+    final Expr callee;
+    final Token paren;
+    final List<Expr> arguements;
   }
 
   static class Variable extends Expr {
