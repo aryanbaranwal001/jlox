@@ -1,0 +1,17 @@
+fun first() {
+  var a =  5;
+  fun second() {
+    var b = 10;
+
+    fun third() {
+      print a + b;
+    }
+
+    return third;
+  }
+
+  return second;
+}
+
+var second = first();
+second()();
