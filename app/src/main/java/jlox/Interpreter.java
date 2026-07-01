@@ -6,7 +6,7 @@ import java.util.List;
 // C We use Void instead of void because void can't be used as a generic type argument.
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   final Environment globals = new Environment();
-  private Environment environment = new Environment();
+  private Environment environment = globals;
 
   Interpreter() {
     globals.define(
@@ -104,6 +104,13 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
       execute(stmt.elseBranch);
     }
     return null;
+  }
+
+  @Override
+  public Void visitReturnStmt(Stmt.Return stmt) {
+    Object value = null;
+    if (stmt.value != null) value = evaluate(stmt.value);
+    throw new Return(value);
   }
 
   // Expression visitors
