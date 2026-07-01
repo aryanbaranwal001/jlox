@@ -16,6 +16,7 @@ parameters   → IDENTIFIER ( "," IDENTIFIER )* ;
 statement    → exprStmt
              | ifStmt
              | printStmt
+             | returnStmt
              | whileStmt
              | forStmt
              | block ;
@@ -23,6 +24,7 @@ statement    → exprStmt
 exprStmt     → expression ";" ;
 ifStmt       → "if" "(" expression ")" statement ("else" statement)? ;
 printStmt    → "print" expression ";" ;
+returnStmt   → "return" expression? ";" ;
 whileStmt    → "while" "(" expression ")" statment ;
 forstmt      → "for" "(" ( varDecl | exprStmt | ";" ) expression? ";" expression? ")" statement ;
 block        → "{" declaration* "}" ;
