@@ -7,6 +7,12 @@ declaration  → varDecl
              | funDecl ;
              | statement ;
 
+varDecl      → "var" IDENTIFIER ( "=" expression )? ";" ;
+
+funDecl      → "fun" function ;
+function     → IDENTIFIER "(" parameters? ")" block ;
+parameters   → IDENTIFIER ( "," IDENTIFIER )* ;
+
 statement    → exprStmt
              | ifStmt
              | printStmt
@@ -14,27 +20,12 @@ statement    → exprStmt
              | forStmt
              | block ;
 
-funDecl      → "fun" function ;
-function     → IDENTIFIER "(" parameters? ")" block ;
-parameters   → IDENTIFIER ( "," IDENTIFIER )* ;
-
-varDecl      → "var" IDENTIFIER ( "=" expression )? ";" ;
-
----
-
 exprStmt     → expression ";" ;
-
 ifStmt       → "if" "(" expression ")" statement ("else" statement)? ;
-
 printStmt    → "print" expression ";" ;
-
 whileStmt    → "while" "(" expression ")" statment ;
-
 forstmt      → "for" "(" ( varDecl | exprStmt | ";" ) expression? ";" expression? ")" statement ;
-
 block        → "{" declaration* "}" ;
-
----
 
 expression   → equality ;
 
