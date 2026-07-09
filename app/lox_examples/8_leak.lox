@@ -1,0 +1,16 @@
+var a = "global";
+
+{
+
+fun call() {
+  print a;
+}
+
+call();
+var a = "local";
+call();
+
+}
+
+
+
