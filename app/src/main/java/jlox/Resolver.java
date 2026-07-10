@@ -12,7 +12,8 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
   private enum FunctionType {
     NONE,
-    FUNCTION
+    FUNCTION,
+    METHOD
   }
 
   Resolver(Interpreter interpreter) {
@@ -20,6 +21,20 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
   }
 
   // Statement visitors
+
+  @Override
+  public Void visitClassStmt(Stmt.Class stmt) {
+    declare(stmt.name);
+    define(stmt.name);
+
+    for (Stmt.Function method : stmt.methods) {
+      FunctionType declaration = FunctionType.METHOD;
+      resolveFunction(method, declaration);
+    }
+
+    return null;
+  }
+
   @Override
   public Void visitFunctionStmt(Stmt.Function stmt) {
     declare(stmt.name);
@@ -86,12 +101,26 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
   }
 
   // Expression visitors
+
+  @Override
+  public Void visitGetExpr(Expr.Get expr) {
+    resolve(expr.object);
+    return null;
+  }
+
   @Override
   public Void visitCallExpr(Expr.Call expr) {
     resolve(expr.callee);
     for (Expr argument : expr.arguements) {
       resolve(argument);
     }
+    return null;
+  }
+
+  @Override
+  public Void visitSetExpr(Expr.Set expr) {
+    resolve(expr.value);
+    resolve(expr.object);
     return null;
   }
 

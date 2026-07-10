@@ -1,0 +1,8 @@
+class Car {
+  drive() {
+    print "Drive Drive Drive";
+  }
+}
+
+var bugatti = Car();
+bugatti.drive();

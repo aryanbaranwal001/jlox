@@ -1,0 +1,13 @@
+class Car {
+  drive() {
+    print "Drive Drive Drive";
+  }
+}
+
+var bugatti = Car();
+
+bugatti.price = "million dollars";
+
+print bugatti.price;
+
+
