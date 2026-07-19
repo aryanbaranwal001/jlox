@@ -10,7 +10,7 @@ declaration  → varDecl
 
 varDecl      → "var" IDENTIFIER ( "=" expression )? ";" ;
 
-classDecl    → "class" IDENTIFIER "{" function* "}" ;
+classDecl    → "class" IDENTIFIER ( "<" IDENTIFIER)? "{" function* "}" ;
 
 funDecl      → "fun" function ;
 function     → IDENTIFIER "(" parameters? ")" block ;
@@ -59,7 +59,8 @@ arguments    → expression ( "," expression )* ;
 primary      → "true" | "false" | "nil"
              | NUMBER | STRING
              | IDENTIFIER
-             | "(" expression ")" ;
+             | "super" "." IDENTIFIER
+             |  "(" expression ")" ;
 
 <!-- Info -->
 <!-- 1. ; at the end means "this grammar rule ends here" -->

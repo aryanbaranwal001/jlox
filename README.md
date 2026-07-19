@@ -31,4 +31,5 @@
 - [x] reject `this` outside of a class
 - [x] constructors (`init` method)
 - [x] reject returning a value from an initializer
-- [ ] inheritance
+- [x] inheritance
+- [x] `super` expressions
